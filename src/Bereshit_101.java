@@ -28,63 +28,63 @@ public class Bereshit_101 {
     public static void main(String[] args) {
         System.out.println("Simulating Bereshit's Landing:");
         // starting point:
-        double vs = 24.8;
-        double hs = 932;
+        double verticalSpeed = 24.8;
+        double horizontalSpeed = 932.2;
         double dist = 181*1000;
-        double ang = 58.3; // zero is vertical (as in landing)
-        double alt = 13748; // 2:25:40 (as in the simulation) // https://www.youtube.com/watch?v=JJ0VfRL9AMs
+        double angle = 58.3; // zero is vertical (as in landing)
+        double altitude = 13748; // 2:25:40 (as in the simulation) // https://www.youtube.com/watch?v=JJ0VfRL9AMs
         double time = 0;
         double dt = 1; // sec
-        double acc=0; // Acceleration rate (m/s^2)
+        double acceleration=0; // Acceleration rate (m/s^2)
         double fuel = 121; //
         double weight = WEIGHT_EMP + fuel;
-        System.out.println("time, vs, hs, dist, alt, ang,weight,acc");
+        System.out.println("time, verticalSpeed, horizontalSpeed, dist, altitude, angle,weight,acceleration");
         double NN = 0.7; // rate[0,1]
         // ***** main simulation loop ******
-        while(alt>0) {
-            if(time%10==0 || alt<100) {
-                System.out.println(time+","+vs+","+hs+","+dist+","+alt+","+ang+","+weight+","+acc);
+        while(altitude>0) {
+            if(time%10==0 || altitude<100) {
+                System.out.println("fuel= "+fuel +"time= "+ time+", verticalSpeed= "+verticalSpeed+", horizontalSpeed= "+horizontalSpeed+", dist= "+dist+", altitude= "+altitude+", angle= "+angle+", weight= "+weight+", acceleration= "+acceleration);
             }
             // over 2 km above the ground
-            if(alt>2000) {	// maintain a vertical speed of [20-25] m/s
-                if(vs >25) {NN+=0.003*dt;} // more power for braking
-                if(vs <20) {NN-=0.003*dt;} // less power for braking
+            if(altitude>2000) {	// maintain a vertical speed of [20-25] m/s
+                if(verticalSpeed >25) {NN+=0.003*dt;} // more power for braking
+                if(verticalSpeed <20) {NN-=0.003*dt;} // less power for braking
             }
             // lower than 2 km - horizontal speed should be close to zero
             else {
-                if(ang>3) {ang-=3;} // rotate to vertical position.
-                else {ang =0;}
+                if(angle>3) {angle-=3;} // rotate to vertical position.
+                else {angle =0;}
                 NN=0.5; // brake slowly, a proper PID controller here is needed!
-                if(hs<2) {hs=0;}
-                if(alt<125) { // very close to the ground!
+                if(horizontalSpeed<2) {horizontalSpeed=0;}
+                if(altitude<125) { // very close to the ground!
                     NN=1; // maximum braking!
-                    if(vs<5) {NN=0.7;} // if it is slow enough - go easy on the brakes
+                    if(verticalSpeed<5) {NN=0.7;} // if it is slow enough - go easy on the brakes
                 }
             }
-            if(alt<5) { // no need to stop
+            if(altitude<5) { // no need to stop
                 NN=0.4;
             }
             // main computations
-            double ang_rad = Math.toRadians(ang);
-            double h_acc = Math.sin(ang_rad)*acc;
-            double v_acc = Math.cos(ang_rad)*acc;
-            double vacc = Moon.getAcc(hs);
+            double ang_rad = Math.toRadians(angle);
+            double h_acc = Math.sin(ang_rad)*acceleration;
+            double v_acc = Math.cos(ang_rad)*acceleration;
+            double vacc = Moon.getAcc(horizontalSpeed);
             time+=dt;
             double dw = dt*ALL_BURN*NN;
             if(fuel>0) {
                 fuel -= dw;
                 weight = WEIGHT_EMP + fuel;
-                acc = NN* accMax(weight);
+                acceleration = NN* accMax(weight);
             }
             else { // ran out of fuel
-                acc=0;
+                acceleration=0;
             }
 
             v_acc -= vacc;
-            if(hs>0) {hs -= h_acc*dt;}
-            dist -= hs*dt;
-            vs -= v_acc*dt;
-            alt -= dt*vs;
+            if(horizontalSpeed>0) {horizontalSpeed -= h_acc*dt;}
+            dist -= horizontalSpeed*dt;
+            verticalSpeed -= v_acc*dt;
+            altitude -= dt*verticalSpeed;
         }
     }
 }
