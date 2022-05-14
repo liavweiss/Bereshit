@@ -1,5 +1,7 @@
 # Bereshit 
 
+
+
 ## סיבות ההתרסקות של הח ללית בראשית:
 תחילה נביא כמה מקורות לגבי ההתרסקות מהאינטרנט, כאשר בסוף נביא את הממצאים מהסרטון
 של השידור החי של ההתרסקות.
@@ -45,3 +47,26 @@ https://www.youtube.com/watch?v=HMdUcchBYRA
 לאבד גובה. לאחר מכן המנוע חזר לעבוד אבל המהירות כבר הייתה גבוהה מידי בשביל להספיק לבלום.
 התקשורת אבדה שוב, ובדקה 36:40 התקשורת חזרה, אבל המהירות האופקית של החללית היה 130
 מטר לשנייה, וגובה של כ-500 מטרים. מה שהוביל להתרסקות של בראשית על הירח תוך מספר שניות .
+
+שמירת התרגום
+## The structure of the simulation
+### The simulation implemented using java with 2 clasess:
+* Moon - Represents the moon
+* Bereshit_101 - Represents the spacecraft and also simulates its landing.
+
+## How to run:
+* In the src folder:
+ ```sh
+  javac *.java
+  ```
+  ```sh
+  java Bereshit_101
+  ```
+  
+## Results:
+* We hava maneged to land wuth fuel = 20.2 
+  ```sh
+      fuel= 20.288811999998874 time= 569.0, verticalSpeed= 2.785771131577139, horizontalSpeed= -0.015162682920312753, dist= -77536.35187283016, altitude=0.11888107864567887, angle= -36.85000000000001, weight= 185.28881199999887, acceleration= 0.6307180597606763
+  ```
+  
+
