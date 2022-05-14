@@ -29,6 +29,10 @@ public class Bereshit_101 {
     }
 
     // 14095, 955.5, 24.8, 2.0
+    public static double update(double ang){
+        if(ang > 0) return ang -0.75;
+        return ang;
+    }
     public static void main(String[] args) {
 
         System.out.println("Simulating Bereshit's Landing:");
@@ -45,53 +49,63 @@ public class Bereshit_101 {
         double weight = WEIGHT_EMP + fuel;
         System.out.println("time, verticalSpeed, horizontalSpeed, dist, altitude, angle,weight,acceleration");
         double NN = 0.7; // rate[0,1]
-
+        boolean land=false;
         // ***** main simulation loop ******
-        while (altitude > 1) {
+        while (altitude > 0) {
             if (time % 10 == 0 || altitude < 100) {
-                System.out.println("fuel= " + fuel + "time= " + time + ", verticalSpeed= " + verticalSpeed + ", horizontalSpeed= " + horizontalSpeed + ", dist= " + dist + ", altitude= " + altitude + ", angle= " + angle + ", weight= " + weight + ", acceleration= " + acceleration);
+                System.out.println("fuel= " + fuel + " time= " + time + ", verticalSpeed= " + verticalSpeed + ", horizontalSpeed= " + horizontalSpeed + ", dist= " + dist + ", altitude= " + altitude + ", angle= " + angle + ", weight= " + weight + ", acceleration= " + acceleration);
             }
             // over 2 km above the ground
             if (altitude > 2000) {    // maintain a vertical speed of [20-25] m/s
+//                System.out.println(angle);
                 if (angle > 59.3) {
                     angle -= 0.8;
-                } else if (angle < 59.3) {
+                }
+                 else if (angle < 59.3) {
                     angle += 0.8;
                 }
                 if (verticalSpeed > 26) {
                     NN += 0.003 * dt;
                 } // more power for braking
-                if (verticalSpeed < 19) {
+                if (verticalSpeed < 18) {
                     NN -= 0.003 * dt;
-                } // less power for braking
+                }
+                // less power for braking
+
             }
             // lower than 2 km - horizontal speed should be close to zero
             else {
-                angle -= 0.75;
-                if (angle > 3)
                     angle -= 0.75;
-                if (altitude > 1500) {
+                if (angle > 3 ) {
+                        angle -= 0.75;
+                }
+                if (verticalSpeed < 10) {
+                    NN = 0.91;
+                }
+                else if (altitude > 1500) {
                     NN = 0.5;
-                } else if (altitude > 1000) {
-                    NN = 0.58;
-                } else if (altitude > 500) {
+                }
+               else  if (altitude > 1000) {
+                     NN = 0.58;
+                 }
+                 else if (altitude > 500) {
                     NN = 0.6;
                 } else if (altitude > 100) {
-                    NN = 0.70;
-                    if (verticalSpeed < 20) NN = 0.65;
-                } else if (altitude > 40) {
-                    NN = 0.75;
-                    if (verticalSpeed < 10 && verticalSpeed > 5) {
-                        NN = 0.7;
+                    NN = 0.7;
+                    if (verticalSpeed < 20) {
+                        NN = 0.65;
                     }
                 }
+                 else if (altitude > 40) {
+                    NN = 0.75;
 
+                }
             }
 
 
 //        }
             if (altitude < 5) { // no need to stop
-                NN = 0.3;
+                NN = 0.1855;
             }
             // main computations
             double ang_rad = Math.toRadians(angle);
