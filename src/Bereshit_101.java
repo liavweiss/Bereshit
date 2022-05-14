@@ -102,8 +102,6 @@ public class Bereshit_101 {
                 }
             }
 
-
-//        }
             if (altitude < 5) { // no need to stop
                 NN = 0.1855;
             }
